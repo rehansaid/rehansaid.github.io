@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehan Said | SQA Engineer</title>
+    <!-- Fonts: Inter (Modern Sans-serif) similar to the reference -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- DARK MODE CSS VARIABLES --- */
+        :root {
+            --bg-color: #0f172a;      /* Deep Navy/Black Background */
+            --card-bg: #1e293b;       /* Lighter Navy for cards */
+            --text-main: #f8fafc;     /* White text */
+            --text-muted: #94a3b8;    /* Grey text */
+            --primary: #38bdf8;       /* Light Blue Accent */
+            --gradient: linear-gradient(90deg, #38bdf8, #2563eb); /* Blue Gradient */
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- NAVIGATION (Glass Effect) --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.85); /* Semi-transparent */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8rem 10% 5rem;
+            min-height: 100vh;
+        }
+
+        .hero-content { max-width: 600px; z-index: 2; }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(56, 189, 248, 0.5); }
+
+        .hero-image-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-img {
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.2);
+            border: 2px solid var(--border);
+            transform: rotate(-3deg);
+            transition: transform 0.5s;
+        }
+        
+        .hero-img:hover { transform: rotate(0deg) scale(1.02); }
+
+        /* --- SECTION STYLES --- */
+        section { padding: 5rem 10%; }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .section-header .line {
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin-top: 10px;
+            border-radius: 2px;
+        }
+
+        /* --- SKILLS --- */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-pill {
+            background: var(--card-bg);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.3s;
+        }
+        
+        .skill-pill:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .skill-icon { font-size: 1.1rem; color: var(--primary); }
+        .skill-brand-icon { height: 24px; width: auto; filter: brightness(0) invert(1); }
+
+        /* --- EXPERIENCE --- */
+        .job-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .job-role { font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
+        .job-company { color: var(--primary); font-weight: 600; margin-bottom: 0.5rem; display: block; }
+        .job-date { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; display: block;}
+        .job-details li { margin-bottom: 0.5rem; margin-left: 1rem; list-style-type: square; color: var(--text-muted); }
+
+        /* --- PROJECTS --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        .project-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; }
+        .project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .tech-stack { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+
+        /* --- CONTACT --- */
+        .contact-box {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .social-btns { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; }
+        .social-btn {
+            width: 40px; height: 40px;
+            background: var(--bg-color);
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 6rem; }
+            .hero-img { width: 250px; height: 250px; margin-bottom: 2rem; transform: rotate(0); }
+            .hero-content { width: 100%; }
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation (Added Name Here) -->
+    <nav>
+        <div class="logo">Rehan Said</div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Added Name in Headline) -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">SQA Engineer & Automation Expert</span>
+            <!-- Changed headline to introduce you immediately -->
+            <h1>Hi, I'm <br>Rehan Said</h1>
+            <p>Detail-oriented SQA Engineer dedicated to elevating product reliability through rigorous manual and automated testing methodologies using Cypress and Agile workflows.</p>
+            
+            <a href="mailto:rehansaid982@gmail.com?subject=Portfolio Inquiry" class="btn-primary">
+                Let's Connect <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+            </a>
+        </div>
+
+        <div class="hero-image-container">
+            <img src="https://z-cdn-media.chatglm.cn/files/b0164efe-9228-4f9c-99fc-4a101d97a524.jpg?auth_key=1877915477-0ee8b5f747054e01880ebeba3a7cdb1f-0-9240ff60db46b0dbb2daa731027b7870" 
+                 alt="Rehan Said" 
+                 class="hero-img">
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header">
+            <h2>About Me</h2>
+            <div class="line"></div>
+        </div>
+        <div class="about-text" style="max-width: 800px; color: var(--text-muted);">
+            <p>I am a Software Quality Assurance Engineer with over 1 year of professional experience, specializing in designing comprehensive test strategies, architecting robust Cypress automation frameworks, and driving defect resolution across complex software ecosystems.</p>
+            <br>
+            <p>Deeply integrated into Agile SDLC & STLC workflows, I partner closely with cross-functional teams to identify edge cases early, minimize production regressions, and champion a culture of quality-first engineering.</p>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="section-header">
+            <h2>Technical Arsenal</h2>
+            <div class="line"></div>
+        </div>
+        <div class="skills-grid">
+            
+            <div class="skill-pill">
+                <img src="https://cdn.simpleicons.org/cypress" alt="Cypress" class="skill-brand-icon">
+                Cypress
+            </div>
+
+            <div class="skill-pill">
+                <img src="https://cdn.simpleicons.org/jira" alt="Jira" class="skill-brand-icon">
+                Jira
+            </div>
+
+            <div class="skill-pill">
+                <img src="https://cdn.simpleicons.org/github" alt="GitHub" class="skill-brand-icon">
+                GitHub
+            </div>
+
+            <div class="skill-pill"><i class="fas fa-bug skill-icon"></i> Manual Testing</div>
+            <div class="skill-pill"><i class="fas fa-clipboard-check skill-icon"></i> Test Planning</div>
+            <div class="skill-pill"><i class="fas fa-sync-alt skill-icon"></i> Agile Methodologies</div>
+            <div class="skill-pill"><i class="fas fa-code-branch skill-icon"></i> SDLC & STLC</div>
+            <div class="skill-pill"><i class="fas fa-users skill-icon"></i> Team Collaboration</div>
+
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="section-header">
+            <h2>Experience</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="job-card">
+            <span class="job-role">SQA Engineer</span>
+            <span class="job-company">Z-Axiss</span>
+            <span class="job-date">July 2025 - Present</span>
+            <ul class="job-details">
+                <li>Responsible for software quality assurance, including test execution, bug tracking, and collaboration with development teams.</li>
+                <li>Conducted manual and automated testing using Cypress to ensure product quality.</li>
+                <li>Actively participated in Agile/Scrum environments with a strong focus on SDLC & STLC processes.</li>
+            </ul>
+        </div>
+
+        <div class="job-card">
+            <span class="job-role">QA Engineer Intern</span>
+            <span class="job-company">Z-Axiss</span>
+            <span class="job-date">Jun 2024 - Aug 2024</span>
+            <ul class="job-details">
+                <li>Contributed to software testing activities and ensured product quality through rigorous manual testing.</li>
+                <li>Assisted in test planning and execution, gaining hands-on experience with defect management using Jira.</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 2rem; padding-left: 1rem; border-left: 2px solid var(--border);">
+            <strong style="color: var(--text-main);">Bachelors of Computer Science</strong> <br>
+            <span style="color: var(--text-muted);">Abdul Wali Khan University Mardan (2021 - 2025)</span>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="section-header">
+            <h2>Featured Projects</h2>
+            <div class="line"></div>
+        </div>
+        <div class="projects-grid">
+            
+            <div class="project-card">
+                <h3 class="project-title">Hand Gesture Control</h3>
+                <p class="project-desc">Developed a touchless computer activity control system using hand gesture recognition using deep learning and CV.</p>
+                <span class="tech-stack">Deep Learning • CV • Python</span>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">Test Automation Suite</h3>
+                <p class="project-desc">Designed and implemented robust test automation frameworks using Cypress to ensure high-quality software releases.</p>
+                <span class="tech-stack">Cypress • JavaScript • Automation</span>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">Manual Testing & Bug Tracking</h3>
+                <p class="project-desc">Comprehensive manual test planning, exploratory testing sessions, and structured defect management using Jira.</p>
+                <span class="tech-stack">Jira • Agile • SDLC</span>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="contact-box">
+            <h2 style="margin-bottom: 1rem;">Let's Work Together</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                I'm based in Bahria, Islamabad. <br>
+                Open for SQA opportunities.
+            </p>
+            <a href="mailto:rehansaid982@gmail.com" class="btn-primary">Send an Email</a>
+            
+            <div class="social-btns">
+                <a href="https://www.linkedin.com/in/rehan-syed0342" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://github.com/rehansaid" target="_blank" class="social-btn"><i class="fab fa-github"></i></a>
+                <a href="tel:+923423230087" class="social-btn"><i class="fas fa-phone"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Rehan Said. Built with dark theme & automation love.</p>
+    </footer>
+
+</body>
+</html>
