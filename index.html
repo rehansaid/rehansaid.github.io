@@ -1,1330 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rehan Said | SQA Engineer</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        /* --- DARK MODE NEON VARIABLES --- */
-        :root {
-            --bg-color: #06080d;
-            --bg-card: #0c1018;
-            --text-main: #e2e8f0;
-            --text-dim: #94a3b8;
-            --border: #1e293b;
-            --neon: #00f0ff;
-            --neon-dim: #00b8c5;
-            --neon-glow: rgba(0, 240, 255, 0.15);
-            --neon-glow2: rgba(0, 240, 255, 0.08);
-            --purple: #a855f7;
-            --purple-glow: rgba(168, 85, 247, 0.15);
-            --card: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.06);
-            --glass: rgba(255, 255, 255, 0.04);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html { scroll-behavior: smooth; }
-        
-        body {
-            font-family: 'Manrope', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* --- UTILITIES --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 2;
-        }
-
-        section { padding: 100px 0; position: relative; overflow: hidden; }
-
-        /* --- NAVIGATION (Glassmorphism) --- */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 18px 0;
-            transition: all 0.4s ease;
-        }
-
-        .nav.scrolled {
-            background: rgba(6, 8, 13, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 12px 0;
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-logo {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-logo span { color: var(--neon); }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.82rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 0;
-            height: 1.5px;
-            background: var(--neon);
-            transition: width 0.3s;
-            border-radius: 1px;
-        }
-
-        .nav-links a:hover { color: #fff; }
-        .nav-links a:hover::after { width: 100%; }
-
-        .nav-cta {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(168, 85, 247, 0.15));
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            color: #fff !important;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 0.78rem !important;
-            font-weight: 600 !important;
-            transition: all 0.3s !important;
-        }
-
-        .nav-cta::after { display: none !important; }
-
-        .nav-cta:hover {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(168, 85, 247, 0.25));
-            border-color: rgba(0, 240, 255, 0.4);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        .hamburger span {
-            width: 22px;
-            height: 1.5px;
-            background: #fff;
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 5px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -5px); }
-
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(6, 8, 13, 0.97);
-            backdrop-filter: blur(20px);
-            z-index: 99;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 28px;
-            padding-top: 80px;
-        }
-
-        .mobile-menu.open { display: flex; }
-        .mobile-menu a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .mobile-menu a:hover { color: var(--neon); }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-
-        .hero-bg img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.3;
-            /* Placeholder image since original link might break, keeping dark theme */
-        }
-
-        .hero-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(6, 8, 13, 0.92) 0%, rgba(6, 8, 13, 0.7) 40%, rgba(0, 240, 255, 0.08) 100%);
-        }
-
-        .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-size: 50px 50px;
-            background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
-            mask-image: linear-gradient(to bottom, black 30%, transparent 80%);
-            -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 80%);
-        }
-
-        .hero-particles {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .hero-particles i {
-            position: absolute;
-            color: var(--neon);
-            opacity: 0;
-            animation: floatUp linear infinite;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 0; transform: translateY(100vh) scale(0); }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 800px;
-            padding: 0 24px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            border-radius: 50px;
-            background: var(--neon-glow);
-            border: 1px solid rgba(0, 240, 255, 0.15);
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--neon);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 28px;
-            backdrop-filter: blur(4px);
-        }
-
-        .hero-badge i { font-size: 0.6rem; animation: pulse 2s infinite; }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        .hero-name {
-            font-size: clamp(2.8rem, 7vw, 5.5rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        
-        /* Gradient text effect */
-        .gradient-text {
-            background: linear-gradient(135deg, var(--neon), var(--purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-title {
-            font-size: clamp(0.95rem, 2.2vw, 1.25rem);
-            color: var(--text-dim);
-            font-weight: 400;
-            margin-bottom: 16px;
-            letter-spacing: 0.01em;
-        }
-
-        .hero-tagline {
-            font-size: clamp(0.85rem, 1.8vw, 1.05rem);
-            color: var(--neon-dim);
-            font-weight: 500;
-            margin-bottom: 40px;
-            font-style: italic;
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .hero-tagline .cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.1em;
-            background: var(--neon);
-            margin-left: 2px;
-            vertical-align: text-bottom;
-            animation: blink 0.8s infinite;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        .hero-btns {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-glow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary-glow {
-            background: linear-gradient(135deg, var(--neon-dim), #0891b2);
-            color: #000;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
-        }
-
-        .btn-primary-glow:hover {
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.35);
-            transform: translateY(-2px);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--card-border);
-        }
-
-        .btn-ghost:hover {
-            border-color: rgba(0, 240, 255, 0.3);
-            background: var(--neon-glow2);
-            transform: translateY(-2px);
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 40px;
-            justify-content: center;
-            margin-top: 56px;
-            padding-top: 32px;
-            border-top: 1px solid var(--card-border);
-            flex-wrap: wrap;
-        }
-
-        .hero-stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .hero-stat-num {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .hero-stat-label {
-            font-size: 0.68rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 2px;
-            font-weight: 500;
-        }
-
-        .bug-counter {
-            color: #ef4444 !important;
-            text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-            position: relative;
-        }
-
-        .bug-counter .bug-icon {
-            font-size: 0.9rem;
-            margin-right: 4px;
-            animation: bugShake 0.5s ease-in-out infinite;
-            display: inline-block;
-        }
-
-        @keyframes bugShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
-
-        /* --- REVEAL ANIMATION --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-
-        /* --- ABOUT SECTION --- */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            margin-top: 48px;
-        }
-
-        .about-img-wrap {
-            position: relative;
-        }
-
-        .about-img {
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-            position: relative;
-        }
-
-        .about-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Using User's Real Image */
-        }
-
-        .about-img::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, var(--bg-color) 0%, transparent 50%);
-        }
-
-        .about-float {
-            position: absolute;
-            top: -16px;
-            right: -16px;
-            padding: 14px 18px;
-            border-radius: 14px;
-            background: rgba(6, 8, 13, 0.8);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            z-index: 3;
-            animation: floatCard 4s ease-in-out infinite;
-        }
-
-        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-
-        .about-float i {
-            color: var(--neon);
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
-
-        .about-float .float-label {
-            font-size: 0.6rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .about-float .float-val {
-            font-size: 0.85rem;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .about-text p {
-            color: var(--text-dim);
-            font-size: 0.92rem;
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        /* --- SKILLS --- */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 16px;
-            margin-top: 48px;
-        }
-
-        .skill-card {
-            padding: 24px;
-            border-radius: 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--card-border);
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--neon), var(--purple));
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .skill-card:hover {
-            border-color: rgba(0, 240, 255, 0.15);
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
-        }
-
-        .skill-card:hover::before { opacity: 1; }
-
-        .skill-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: var(--neon-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--neon);
-            font-size: 1rem;
-            margin-bottom: 16px;
-        }
-
-        .skill-name {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 6px;
-        }
-
-        .skill-desc {
-            font-size: 0.78rem;
-            color: var(--text-dim);
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-
-        .skill-bar-bg {
-            height: 4px;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.06);
-            overflow: hidden;
-        }
-
-        .skill-bar-fill {
-            height: 100%;
-            border-radius: 2px;
-            background: linear-gradient(90deg, var(--neon), var(--purple));
-            width: 0%;
-            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .skill-bar-fill.filled { width: var(--w); }
-
-        .skill-pct {
-            font-size: 0.68rem;
-            color: var(--text-dim);
-            text-align: right;
-            margin-top: 6px;
-            font-weight: 600;
-        }
-
-        /* --- EXPERIENCE TIMELINE --- */
-        .timeline {
-            margin-top: 48px;
-            position: relative;
-            padding-left: 40px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 8px;
-            bottom: 8px;
-            width: 1.5px;
-            background: linear-gradient(to bottom, var(--neon), var(--purple), transparent);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 36px;
-        }
-
-        .timeline-item:last-child { margin-bottom: 0; }
-
-        .timeline-dot {
-            position: absolute;
-            left: -40px;
-            top: 6px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--bg-card);
-            border: 2px solid var(--neon);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-
-        .timeline-dot.dim { border-color: var(--text-dim); }
-
-        .timeline-dot i { font-size: 0.65rem; color: var(--neon); }
-        .timeline-dot.dim i { color: var(--text-dim); }
-
-        .timeline-card {
-            padding: 28px;
-            border-radius: 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--card-border);
-            transition: all 0.3s;
-        }
-
-        .timeline-card:hover {
-            border-color: rgba(0, 240, 255, 0.15);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .timeline-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .timeline-role { font-size: 1.05rem; font-weight: 700; color: #fff; }
-        .timeline-company { font-size: 0.85rem; color: var(--neon-dim); font-weight: 500; margin-top: 2px; }
-        .timeline-date { font-size: 0.7rem; font-weight: 600; color: var(--text-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); padding: 4px 12px; border-radius: 6px; white-space: nowrap; }
-        .timeline-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--neon); background: var(--neon-glow); border: 1px solid rgba(0, 240, 255, 0.15); padding: 3px 10px; border-radius: 4px; margin-bottom: 12px; }
-        .timeline-card ul { list-style: none; }
-        .timeline-card li { font-size: 0.85rem; color: var(--text-dim); line-height: 1.7; padding-left: 20px; position: relative; margin-bottom: 8px; }
-        .timeline-card li::before { content: '•'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 1px; color: var(--neon); font-size: 0.6rem; }
-
-        /* --- PROJECTS --- */
-        .project-card {
-            border-radius: 20px;
-            overflow: hidden;
-            background: var(--bg-card);
-            border: 1px solid var(--card-border);
-            transition: all 0.4s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-card:hover {
-            border-color: rgba(0, 240, 255, 0.15);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
-        }
-
-        .project-img {
-            position: relative;
-            height: 220px;
-            overflow: hidden;
-        }
-
-        .project-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 6s ease;
-        }
-
-        .project-card:hover .project-img img { transform: scale(1.08); }
-
-        .project-img::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, var(--bg-color) 0%, transparent 60%);
-        }
-
-        .project-body {
-            padding: 28px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-        .project-tag { font-size: 0.65rem; font-weight: 600; color: var(--neon); background: var(--neon-glow); border: 1px solid rgba(0, 240, 255, 0.12); padding: 3px 10px; border-radius: 4px; }
-        .project-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
-        .project-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 20px; }
-        .project-links { display: flex; gap: 12px; }
-        .project-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: var(--text-dim); text-decoration: none; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--card-border); transition: all 0.3s; }
-        .project-link:hover { border-color: rgba(0, 240, 255, 0.3); color: var(--neon); background: var(--neon-glow2); transform: translateX(4px); }
-
-        /* --- CONTACT --- */
-        .contact-section { position: relative; overflow: hidden; }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            margin-top: 48px;
-        }
-
-        .contact-info-card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            border-radius: 14px;
-            background: var(--glass);
-            border: 1px solid var(--card-border);
-            margin-bottom: 12px;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .contact-info-card:hover {
-            border-color: rgba(0, 240, 255, 0.2);
-            background: var(--neon-glow2);
-            transform: translateX(4px);
-        }
-
-        .contact-info-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--neon-glow); display: flex; align-items: center; justify-content: center; color: var(--neon); font-size: 0.9rem; flex-shrink: 0; }
-        .contact-info-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
-        .contact-info-val { font-size: 0.88rem; color: #fff; font-weight: 500; margin-top: 1px; }
-
-        .contact-form {
-            padding: 28px;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-        }
-
-        .form-group { margin-bottom: 16px; }
-        .form-label { display: block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 8px; }
-        .form-input { width: 100%; padding: 12px 16px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--card-border); color: #fff; font-family: inherit; font-size: 0.88rem; outline: none; transition: all 0.3s; }
-        .form-input::placeholder { color: var(--text-dim); }
-        .form-input:focus { border-color: rgba(0, 240, 255, 0.3); box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.08); }
-        textarea.form-input { resize: none; min-height: 110px; }
-        .form-submit { width: 100%; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, var(--neon-dim), #0891b2); color: #000; font-family: inherit; font-size: 0.85rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .form-submit:hover { box-shadow: 0 0 40px rgba(0, 240, 255, 0.25); transform: translateY(-2px); }
-
-        /* --- TOAST --- */
-        .toast {
-            position: fixed;
-            bottom: 28px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            padding: 14px 24px;
-            border-radius: 12px;
-            background: rgba(6, 8, 13, 0.9);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 240, 255, 0.2);
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 500;
-            z-index: 200;
-            opacity: 0;
-            transition: all 0.4s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            white-space: nowrap;
-        }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast i { color: var(--neon); }
-
-        /* --- FOOTER --- */
-        footer { padding: 32px 24px; border-top: 1px solid var(--card-border); text-align: center; color: var(--text-dim); font-size: 0.75rem; margin-top: 4rem; }
-        .footer-inner { max-width: 1100px; margin: auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
-        .footer-copy { font-size: 0.75rem; color: var(--text-dim); }
-        .footer-socials { display: flex; gap: 10px; }
-        .footer-social { width: 36px; height: 36px; border-radius: 10px; background: var(--glass); border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; font-size: 0.85rem; transition: all 0.3s; }
-        .footer-social:hover { border-color: rgba(0, 240, 255, 0.3); color: var(--neon); background: var(--neon-glow2); transform: translateY(-2px); }
-
-        .scroll-top { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--neon-dim), #0891b2); color: #000; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; z-index: 90; opacity: 0; transform: translateY(20px); transition: all 0.4s; border: none; box-shadow: 0 0 20px rgba(0, 240, 255, 0.2); }
-        .scroll-top.visible { opacity: 1; transform: translateY(0); }
-        .scroll-top:hover { box-shadow: 0 0 40px rgba(0, 240, 255, 0.35); transform: translateY(-3px); }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hamburger { display: flex; }
-            .about-grid { grid-template-columns: 1fr; gap: 32px; }
-            .about-float { top: -12px; right: -8px; }
-            .skills-grid { grid-template-columns: 1fr; }
-            .contact-grid { grid-template-columns: 1fr; }
-            .hero-stats { gap: 24px; }
-            .timeline { padding-left: 32px; }
-            .timeline::before { left: 11px; }
-            .timeline-dot { left: -32px; width: 24px; height: 24px; }
-            .timeline-dot i { font-size: 0.5rem; }
-            .about-soft-skills { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rehan Said | Software Quality Assurance Engineer</title>
+<meta name="description" content="Rehan Said, SQA Engineer with 1.5 years of experience in manual and automation testing, Cypress, API testing with Postman, and Agile delivery.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rehan Said | Software Quality Assurance Engineer">
+<meta property="og:description" content="Manual and Automation Testing | Cypress | Agile. Based in Bahria, Islamabad, Pakistan.">
+<meta property="og:url" content="https://rehansaid.github.io/">
+<style>
+:root{--bg:#f3f6fc;--alt:#e8eef9;--card:rgba(255,255,255,.82);--text:#12203a;--mut:#51607c;--navy:#0b1f3f;--acc:#1f6feb;--line:rgba(18,32,58,.12);--ok:#0a7d6e;--g:linear-gradient(135deg,#2563eb,#6366f1);--sh:0 10px 30px rgba(11,31,63,.08)}
+:root[data-theme=dark]{--bg:#050b1a;--alt:#0a1428;--card:rgba(255,255,255,.05);--text:#e6ecf8;--mut:#9fb0cc;--navy:#f1f5fd;--acc:#5ab8ff;--line:rgba(255,255,255,.11);--ok:#4ade80;--g:linear-gradient(135deg,#0ea5e9,#6366f1);--sh:0 14px 40px rgba(0,0,0,.4)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{overflow-x:clip;margin:0;font:16px/1.65 Inter,"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+a{color:var(--acc)}h1,h2,h3{color:var(--navy);line-height:1.2;margin:0 0 .5em}
+.wrap{max-width:1040px;margin:auto;padding:0 20px}section{padding:84px 0}
+h2{font-size:2rem;letter-spacing:-.01em}h2::after{content:"";display:block;width:56px;height:4px;border-radius:4px;background:var(--g);margin-top:10px}
+.meta{color:var(--mut);font-size:.95rem}ul.b{padding-left:20px}ul.b li{margin-bottom:8px;color:var(--mut)}
+header{position:sticky;top:10px;z-index:30;padding-top:10px}
+nav{display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px;padding:0 20px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;overflow-x:auto}nav ul a{color:var(--mut);text-decoration:none;font-size:.9rem;white-space:nowrap;transition:color .2s}nav ul a:hover,nav ul a.act{color:var(--acc)}nav ul a.act{font-weight:600}
+.brand{font-weight:800;color:var(--navy);text-decoration:none}.brand span{color:var(--acc)}
+button,.btn{font:inherit;font-weight:600;cursor:pointer;border-radius:10px;border:0;padding:11px 22px;background:var(--g);color:#fff;text-decoration:none;display:inline-block;transition:transform .2s,box-shadow .2s}
+button.o,.btn.o{background:var(--card);color:var(--text);border:1px solid var(--line)}button.sm{padding:6px 14px;font-size:.85rem}
+.btn:hover,button:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(79,110,240,.35)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}main,footer{position:relative;z-index:1}
+.hero{position:relative;overflow:hidden;padding:56px 0 90px}.hero::before{content:"";position:absolute;left:-50%;right:-50%;bottom:0;height:62%;background-image:linear-gradient(rgba(90,150,255,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(90,150,255,.22) 1px,transparent 1px);background-size:56px 56px;transform:perspective(420px) rotateX(62deg);transform-origin:50% 100%;animation:flr 3s linear infinite;-webkit-mask-image:linear-gradient(transparent,#000 85%);mask-image:linear-gradient(transparent,#000 85%)}
+#fx{position:absolute;inset:0;width:100%;height:100%}.hero .wrap{position:relative;z-index:1}
+.hgrid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+.badge{display:inline-block;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.4);color:var(--ok);border-radius:99px;padding:3px 14px;font-size:.85rem;font-weight:600;margin-bottom:18px}
+.hero h1{font-size:clamp(2.6rem,6.5vw,4.2rem);letter-spacing:-.025em;margin-bottom:6px}
+.hero p{max-width:560px;color:var(--mut);font-size:1.08rem}.hero p.sub{color:var(--text);font-weight:600;font-size:1rem}
+.hero p.role{font-size:clamp(1.4rem,3.4vw,2.2rem);font-weight:700;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0 0 8px}
+.hero .btn{margin:8px 10px 0 0}
+.ph{position:relative;justify-self:center;width:min(100%,360px);aspect-ratio:1/1;transition:transform .2s ease-out;perspective:900px}
+.phi{position:absolute;inset:0;transform-style:preserve-3d;animation:phin 1s cubic-bezier(.2,.8,.2,1) both,phfl 6s 1s ease-in-out infinite}
+.circ{position:absolute;inset:11%;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 28%,#6366f1,#0ea5e9 75%);box-shadow:0 0 0 4px var(--acc),0 0 0 11px rgba(90,184,255,.18),0 0 60px rgba(79,110,240,.5)}
+.orb{position:absolute;left:-8%;right:-8%;top:34%;bottom:-6%;border:1px dashed rgba(90,184,255,.55);border-radius:50%;animation:orb 10s linear infinite}
+.orb::after{content:"";position:absolute;top:-5px;left:50%;width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 14px var(--acc)}
+.orb.r{left:2%;right:2%;top:42%;bottom:2%;border-style:solid;border-color:rgba(165,140,255,.45);animation-duration:14s;animation-direction:reverse}
+.ph img{position:absolute;left:6%;bottom:0;width:88%;height:auto}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--sh);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transform-style:preserve-3d;will-change:transform;transition:transform .2s,border-color .25s}
+.card:hover{border-color:var(--acc)}.card:not(.stat):not(.ct)::before{content:"";position:absolute;top:0;left:22px;width:36px;height:4px;border-radius:0 0 4px 4px;background:var(--g)}
+.card h3{font-size:1.05rem;margin-top:4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:0;list-style:none}.tags li{background:rgba(127,150,190,.12);border:1px solid var(--line);border-radius:99px;padding:2px 11px;font-size:.85rem}
+.tags li.hl{background:rgba(79,140,255,.16);border-color:var(--acc);color:var(--acc);font-weight:600}
+.abt{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat{text-align:center;display:flex;flex-direction:column;justify-content:center}.stat b{font-size:1.5rem;color:var(--acc)}.stat span{font-size:.85rem;color:var(--mut)}
+.tl{border-left:2px solid rgba(90,150,255,.4);padding-left:22px;margin-left:6px}.tl article{position:relative;margin-bottom:34px}.tl article::before{content:"";position:absolute;left:-30px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px var(--bg)}
+.pill{float:right;font:600 .78rem Consolas,monospace;background:rgba(79,140,255,.15);color:var(--acc);border-radius:6px;padding:3px 10px}
+.ct{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--text)}.ct i{font-style:normal;width:40px;height:40px;border-radius:10px;background:rgba(79,140,255,.15);color:var(--acc);display:grid;place-items:center;flex:none;font-weight:700}
+.ct span{display:block;font-size:.85rem;color:var(--mut);word-break:break-all}
+input,textarea{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(127,150,190,.1);color:var(--text);max-width:100%}
+form label{display:block;margin-bottom:12px;font-weight:600}form input,form textarea{width:100%}
+footer{padding:28px 0;text-align:center;color:var(--mut);border-top:1px solid var(--line);background:var(--bg)}
+.rv{opacity:0;transform:perspective(900px) rotateX(10deg) translateY(30px);transform-origin:50% 100%;transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
+.up{position:fixed;right:20px;bottom:20px;z-index:40;width:44px;height:44px;border-radius:50%;padding:0;display:none}.up.show{display:block}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes flr{to{background-position:0 56px}}@keyframes phin{from{opacity:0;transform:translateY(30px) scale(.92)}}@keyframes phfl{50%{transform:translateY(-10px)}}
+@keyframes orb{from{transform:rotateX(76deg) rotateZ(0)}to{transform:rotateX(76deg) rotateZ(360deg)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}.phi,.orb,.hero::before{animation:none!important}}
+@media(max-width:800px){.hgrid,.abt{grid-template-columns:1fr}.ph{width:250px;order:-1}.hero{padding:24px 0 60px;text-align:center}.hero p{margin-left:auto;margin-right:auto}.hero::before{height:45%}}
+@media(max-width:700px){header{padding-top:6px;top:6px}nav{flex-wrap:wrap;height:auto;padding:8px 14px;border-radius:14px}nav ul{order:3;width:100%;gap:16px;padding:2px 0 4px;font-size:.85rem}section{padding:52px 0}h2{font-size:1.7rem}.card{padding:18px}.tl{padding-left:18px;margin-left:4px}.tl article::before{left:-26px}.pill{float:none;display:inline-block;margin:6px 0 0;font-size:.74rem}.hero .btn{display:block;width:100%;margin:10px 0 0}.stat b{font-size:1.25rem}.up{right:14px;bottom:14px}}
+@media(max-width:380px){.wrap{padding:0 14px}.stats{grid-template-columns:1fr}.hero h1{font-size:2.3rem}}
+.aur{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aur i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.2;animation:dr 24s ease-in-out infinite alternate}
+:root[data-theme=dark] .aur i{opacity:.34}
+.aur i:nth-child(1){width:46vw;height:46vw;left:-10vw;top:-8vw;background:#2563eb}
+.aur i:nth-child(2){width:40vw;height:40vw;right:-8vw;top:30vh;background:#7c3aed;animation-delay:-8s}
+.aur i:nth-child(3){width:36vw;height:36vw;left:25vw;bottom:-14vw;background:#0ea5e9;animation-delay:-15s}
+.aur::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(127,160,220,.35) 1px,transparent 1.3px);background-size:30px 30px;-webkit-mask-image:radial-gradient(ellipse at 50% 35%,#000,transparent 78%);mask-image:radial-gradient(ellipse at 50% 35%,#000,transparent 78%)}
+@keyframes dr{to{transform:translate(9vw,7vh) scale(1.18)}}
+@media(prefers-reduced-motion:reduce){.aur i{animation:none}}
+@media(max-width:700px){.aur i{filter:blur(60px)}}
+#st{margin:12px 0 0;min-height:1.4em}
+</style>
 </head>
 <body>
+<div class="aur" aria-hidden="true"><i></i><i></i><i></i></div>
+<canvas id="bg" aria-hidden="true"></canvas>
+<header><div class="wrap"><nav aria-label="Main">
+<a class="brand" href="#top">Rehan <span>Said</span></a>
+<ul><li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li><li><a href="#services">Services</a></li><li><a href="#experience">Experience</a></li><li><a href="#projects">Projects</a></li><li><a href="#education">Education</a></li><li><a href="#contact">Contact</a></li></ul>
+<button class="o sm" id="theme" type="button" aria-label="Toggle light and dark mode">Dark mode</button>
+</nav></div></header>
+<main id="top">
+<div class="hero"><canvas id="fx" aria-hidden="true"></canvas><div class="wrap hgrid"><div>
+<span class="badge">Available for QA opportunities</span>
+<h1>Rehan Said</h1>
+<p class="role">Software Quality Assurance Engineer</p>
+<p class="sub">Manual and Automation Testing | Cypress | Agile</p>
+<p>Committed to minimizing production defects and delivering robust, user-centric software.</p>
+<a class="btn" href="#" id="cv" role="button">Download CV</a>
+<a class="btn o" href="#contact">Contact Me</a>
+<a class="btn o" href="https://www.linkedin.com/in/rehan-syed0342" target="_blank" rel="noopener">View LinkedIn</a>
+</div><div class="ph"><div class="phi"><div class="orb"></div><div class="orb r"></div><div class="circ"><img src="data:image/webp;base64,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" width="360" height="340" alt="Portrait of Rehan Said" fetchpriority="high"></div></div></div></div></div>
 
-    <!-- Navigation -->
-    <nav class="nav" id="nav">
-        <div class="nav-inner">
-            <a href="#hero" class="nav-logo">Rehan<span>.</span></a>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact" class="nav-cta">Contact Me</a></li>
-            </ul>
-            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-        </div>
-    </nav>
-    
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact Me</a>
-    </div>
+<section id="about"><div class="wrap rv"><h2>About</h2>
+<div class="abt"><p class="card" style="margin:0">Results-driven SQA Engineer with 1.5 years of experience in manual and automated testing of web and mobile applications (iOS and Android), defect management, and Agile delivery. Proficient in Cypress (JavaScript) test automation, API testing with Postman, Jira bug tracking, and SDLC/STLC processes. Experience testing SaaS and AI products across business listings, logistics, healthcare, and home services domains. Committed to minimizing production defects and delivering robust, user-centric software.</p><div class="stats"><div class="card stat"><b>1.5 years</b><span>Of QA experience</span></div><div class="card stat"><b>4</b><span>Domains tested</span></div><div class="card stat"><b>Web + Mobile</b><span>iOS and Android</span></div><div class="card stat"><b>AI agents</b><span>Tested end to end</span></div></div></div></div></section>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-bg"><img src="https://picsum.photos/seed/cyber-tech-futuristic/1920/1080.jpg" alt=""></div>
-        <div class="hero-grid"></div>
-        <div class="hero-particles" id="particles"></div>
-        <div class="hero-content">
-            <div class="hero-badge reveal"><i class="fas fa-circle"></i> Available for Opportunities</div>
-            <h1 class="hero-name reveal reveal-delay-1">Hi, I'm <span class="gradient-text">Rehan Said</span></h1>
-            <p class="hero-title reveal reveal-delay-2" id="typewriter"></p>
-            <div class="hero-btns reveal reveal-delay-3">
-                <a href="#projects" class="btn-glow btn-primary-glow"><i class="fas fa-rocket"></i> View Projects</a>
-                <a href="#contact" class="btn-glow btn-ghost"><i class="fas fa-envelope"></i> Contact Me</a>
-            </div>
-            
-            <div class="hero-stats reveal">
-                <div class="hero-stat">
-                    <div class="hero-stat-num">1+</div>
-                    <div class="hero-stat-label">Years Exp</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-num gradient-text">Cypress</div>
-                    <div class="hero-stat-label">Automation</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-num gradient-text">Agile</div>
-                    <div class="hero-stat-label">Scrum</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-num bug-counter"><span class="bug-icon"><i class="fas fa-bug"></i></span>1000+</div>
-                    <div class="hero-stat-label">Bugs Escaped 😅</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="skills"><div class="wrap rv"><h2>Technical Skills</h2><p class="meta">The tools and methods behind my day-to-day testing.</p><div class="grid">
+<div class="card"><h3>Testing</h3><ul class="tags"><li>Manual Testing</li><li>Automated Testing</li><li>Test Planning</li><li>Test Case Design</li><li>Test Execution</li><li>Regression Testing</li><li>Functional Testing</li><li>Integration Testing</li><li>Smoke Testing</li><li>Exploratory Testing</li><li>Mobile Testing</li></ul></div>
+<div class="card"><h3>Automation</h3><ul class="tags"><li class="hl">Cypress</li><li class="hl">JavaScript</li></ul></div>
+<div class="card"><h3>API Testing</h3><ul class="tags"><li class="hl">Postman</li><li>REST API Validation</li></ul></div>
+<div class="card"><h3>AI Application Testing</h3><ul class="tags"><li>AI Agent Testing</li><li>Response Validation</li><li>Tool Call and Workflow Testing</li></ul></div>
+<div class="card"><h3>Tools</h3><ul class="tags"><li>Jira</li><li>GitHub</li><li>Git</li></ul></div>
+<div class="card"><h3>Methodologies</h3><ul class="tags"><li>Agile</li><li>Scrum</li><li>SDLC</li><li>STLC</li><li>Quality Assurance and Control</li></ul></div>
+<div class="card"><h3>Soft Skills</h3><ul class="tags"><li>Attention to Detail</li><li>Team Collaboration</li><li>Communication</li><li>Problem-Solving</li></ul></div>
+</div></div></section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-img-wrap reveal">
-                    <!-- Using User's Real Image from previous prompt for best quality -->
-                    <div class="about-img">
-                        <img src="https://z-cdn-media.chatglm.cn/files/b0164efe-9228-4f9c-99fc-4a101d97a524.jpg?auth_key=1877915477-0ee8b5f747054e01880ebeba3a7cdb1f-0-9240ff60db46b0dbb2daa731027b7870" 
-                             alt="Rehan Said">
-                    </div>
-                    <div class="about-float">
-                        <i class="fas fa-shield-alt"></i>
-                        <div class="float-label">Focus</div>
-                        <div class="float-val">SQA</div>
-                    </div>
-                </div>
-                <div class="about-text reveal">
-                    <p>I am a Software Quality Assurance Engineer with over 1 year of professional experience. I specialize in designing comprehensive test strategies, architecting robust Cypress automation frameworks, and driving defect resolution.</p>
-                    <p>Deeply integrated into Agile SDLC & STLC workflows, I partner with cross-functional teams to identify edge cases early and champion a culture of quality-first engineering.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="services"><div class="wrap rv"><h2>Services</h2><p class="meta">Where I can add value to your team or project.</p><div class="grid"><div class="card"><h3>Manual and functional testing</h3><p class="meta" style="margin:0">Test case design and execution, smoke, exploratory, regression and integration testing.</p></div><div class="card"><h3>Test automation</h3><p class="meta" style="margin:0">Cypress (JavaScript) scripts in GitHub repositories for critical user flows.</p></div><div class="card"><h3>API testing</h3><p class="meta" style="margin:0">Postman and REST API validation of backend workflows and endpoints.</p></div><div class="card"><h3>Web and mobile testing</h3><p class="meta" style="margin:0">Browser-based applications and mobile apps on iOS and Android.</p></div><div class="card"><h3>AI agent testing</h3><p class="meta" style="margin:0">Response validation, tool calls and multi-step workflows.</p></div><div class="card"><h3>Defect management</h3><p class="meta" style="margin:0">Jira tracking from first report to verified closure, aligned with Agile sprints.</p></div></div></div></section>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="container">
-            <div class="reveal">
-                <div class="section-label"><i class="fas fa-star"></i> Core Skills</div>
-                <h2 class="section-title">Tools & techniques I <span class="dim">master</span></h2>
-                <p class="section-desc">A comprehensive toolkit spanning manual testing, automation frameworks, and agile delivery methodologies.</p>
-            </div>
-            
-            <div class="skills-grid">
-                <div class="skill-card reveal">
-                    <div class="skill-icon"><i class="fas fa-hand-pointer"></i></div>
-                    <div class="skill-name">Manual Testing</div>
-                    <div class="skill-desc">Functional, regression, and integration testing across multiple product releases with detailed test case documentation.</div>
-                    <div class="skill-bar-bg"><div class="skill-bar-fill filled" style="--w: 92%"></div></div>
-                    <div class="skill-pct">92%</div>
-                </div>
+<section id="experience"><div class="wrap rv"><h2>Professional Experience</h2><p class="meta">Hands-on QA across web, mobile and AI products.</p><div class="tl">
+<article><h3>SQA Engineer, Z-Axiss <span class="pill">July 2025 - September 2026</span></h3><p class="meta">Islamabad, Pakistan<br>Multi-domain SaaS and AI products for Trillo Inc. (San Ramon, CA, USA)</p><ul class="b">
+<li>Designed and executed test cases for functional, regression, and integration testing across multiple product releases, ensuring stable, high-quality deployments</li>
+<li>Performed manual and automation testing of web and mobile applications across Business Listings, Logistics, Healthcare, Home Services, and SaaS products</li>
+<li>Built and maintained Cypress (JavaScript) automation scripts for Business Listings and Logistics applications in GitHub repositories, reducing manual effort and expanding coverage of critical user flows</li>
+<li>Tested deployed AI agents, validating response accuracy, tool calls, multi-step workflows, and performance</li>
+<li>Conducted API testing with Postman and validated backend workflows and endpoints</li>
+<li>Logged, tracked, and verified defects end-to-end in Jira, collaborating with developers until closure to prevent regression</li>
+<li>Participated in Agile sprint ceremonies (planning, standups, retrospectives), aligning QA activities with development cycles and contributing to continuous process improvement</li></ul></article>
+<article><h3>QA Engineer Intern, Z-Axiss <span class="pill">June 2024 - August 2024</span></h3><p class="meta">Islamabad, Pakistan</p><ul class="b">
+<li>Executed manual test cases across functional and regression cycles, documenting defects with clear reproduction steps to support faster developer resolution</li>
+<li>Gained hands-on experience in SDLC and STLC processes within a professional Agile environment</li></ul></article>
+</div></div></section>
 
-                <div class="skill-card reveal reveal-delay-1">
-                    <div class="skill-icon"><i class="fas fa-robot"></i></div>
-                    <div class="skill-name">Cypress Automation</div>
-                    <div class="skill-desc">Building and maintaining Cypress automation scripts to reduce manual effort and expand test coverage.</div>
-                    <div class="skill-bar-bg"><div class="skill-bar-fill filled" style="--w: 88%"></div></div>
-                    <div class="skill-pct">88%</div>
-                </div>
+<section id="projects"><div class="wrap rv"><h2>Projects</h2>
+<div class="card"><h3>Hand Gesture-Based Computer Activity Control System</h3><p class="meta">Final Year Project | 2024 - 2025</p><ul class="b">
+<li>Developed a touchless HCI system using deep learning and computer vision to detect and interpret real-time hand gestures, replacing traditional input devices</li>
+<li>Addressed challenges including gesture variability, background noise, and real-time responsiveness, with applications in assistive technology and smart environments</li></ul><ul class="tags" style="margin-top:14px"><li>Deep Learning</li><li>Computer Vision</li><li>HCI</li></ul></div></div></section>
 
-                <div class="skill-card reveal reveal-delay-2">
-                    <div class="skill-icon"><i class="fas fa-tools"></i></div>
-                    <div class="skill-name">Jira & GitHub</div>
-                    <div class="skill-desc">End-to-end defect tracking in Jira, version control with Git, and collaborative development workflows via GitHub.</div>
-                    <div class="skill-bar-bg"><div class="skill-bar-fill filled" style="--w: 85%"></div></div>
-                    <div class="skill-pct">85%</div>
-                </div>
+<section id="education"><div class="wrap rv"><h2>Education and Languages</h2><div class="grid">
+<div class="card"><h3>Bachelor of Computer Science</h3><p class="meta">Abdul Wali Khan University, Mardan | 2021 - 2025</p></div>
+<div class="card"><h3>Languages</h3><ul class="tags"><li>English (Professional)</li><li>Urdu (Native)</li><li>Pashto (Native)</li></ul></div></div></div></section>
 
-                <div class="skill-card reveal">
-                    <div class="skill-icon"><i class="fas fa-sitemap"></i></div>
-                    <div class="skill-name">SDLC / STLC</div>
-                    <div class="skill-desc">Deep understanding of Software Development and Testing Life Cycles, ensuring structured QA integration at every phase.</div>
-                    <div class="skill-bar-bg"><div class="skill-bar-fill filled" style="--w: 90%"></div></div>
-                    <div class="skill-pct">90%</div>
-                </div>
+<section id="contact"><div class="wrap rv"><h2>Contact</h2><p class="meta">Open to QA roles and testing projects. Email is the fastest way to reach me.</p>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+<a class="card ct" href="mailto:rehansaid982@gmail.com"><i>@</i><div><strong>Email</strong><span>rehansaid982@gmail.com</span></div></a>
+<a class="card ct" href="tel:+923423230087"><i>Tel</i><div><strong>Phone</strong><span>+92-3423230087</span></div></a>
+<a class="card ct" href="https://www.linkedin.com/in/rehan-syed0342" target="_blank" rel="noopener"><i>in</i><div><strong>LinkedIn</strong><span>Open profile</span></div></a>
+<div class="card ct"><i>Loc</i><div><strong>Location</strong><span>Bahria, Islamabad, Pakistan</span></div></div></div>
+<form id="cf" class="card" style="margin-top:18px" action="https://formsubmit.co/rehansaid982@gmail.com" method="POST"><input type="hidden" name="_subject" value="New message from your portfolio"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><input type="hidden" name="_next" value="https://rehansaid.github.io/#contact"><label>Name<input type="text" id="cn" name="name" required></label><label>Email<input type="email" id="ce" name="email" required></label><label>Message<textarea id="cm" name="message" rows="4" required></textarea></label><input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true"><button type="submit">Send message</button><p id="st" class="meta" role="status" aria-live="polite"></p></form>
+</div></section>
+</main>
+<button id="up" class="up" type="button" aria-label="Back to top">&uarr;</button>
+<footer>Based in Bahria, Islamabad, Pakistan<br>&copy; <span id="yr"></span> Rehan Said</footer>
 
-                <div class="skill-card reveal reveal-delay-1">
-                    <div class="skill-icon"><i class="fas fa-sync-alt"></i></div>
-                    <div class="skill-name">Agile & Scrum</div>
-                    <div class="skill-desc">Active participation in sprint ceremonies, aligning QA activities with development cycles and driving continuous improvement.</div>
-                    <div class="skill-bar-bg"><div class="skill-bar-fill filled" style="--w: 87%"></div></div>
-                    <div class="skill-pct">87%</div>
-                </div>
-
-                <div class="skill-card reveal reveal-delay-2">
-                    <div class="skill-icon"><i class="fas fa-bug"></i></div>
-                    <div class="skill-name">Defect Management</div>
-                    <div class="skill-desc">Tracking and managing defects end-to-end with clear reproduction steps, severity classification, and regression prevention.</div>
-                    <div class="skill-bar-bg"><div class="skill-bar-fill filled" style="--w: 91%"></div></div>
-                    <div class="skill-pct">91%</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience">
-        <div class="container">
-            <div class="reveal">
-                <div class="section-label"><i class="fas fa-briefcase"></i> Experience</div>
-                <h2 class="section-title">Professional <span class="dim">journey</span></h2>
-                <p class="section-desc">Delivering quality assurance excellence across real-world product environments.</p>
-            </div>
-
-            <div class="timeline">
-                <div class="timeline-item reveal">
-                    <div class="timeline-dot"><i class="fas fa-briefcase"></i></div>
-                    <div class="timeline-card">
-                        <span class="timeline-badge">Current Role</span>
-                        <div class="timeline-header">
-                            <div>
-                                <div class="timeline-role">SQA Engineer</div>
-                                <div class="timeline-company">Z-Axiss — Islamabad, Pakistan</div>
-                            </div>
-                            <span class="timeline-date">July 2025 – Present</span>
-                        </div>
-                        <ul>
-                            <li>Design and execute test cases for functional, regression, and integration testing across multiple product releases, ensuring stable and high-quality deployments.</li>
-                            <li>Build and maintain Cypress automation scripts, reducing manual testing effort and expanding test coverage across critical user flows.</li>
-                            <li>Track and manage defects end-to-end using Jira, collaborating with developers to ensure timely resolution and prevent regression.</li>
-                            <li>Participate in Agile sprint ceremonies, aligning QA activities with development cycles and contributing to continuous process improvement.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item reveal reveal-delay-1">
-                    <div class="timeline-dot dim"><i class="fas fa-seedling"></i></div>
-                    <div class="timeline-card">
-                        <div class="timeline-header">
-                            <div>
-                                <div class="timeline-role">QA Engineer Intern</div>
-                                <div class="timeline-company">Z-Axiss — Islamabad, Pakistan</div>
-                            </div>
-                            <span class="timeline-date">June 2024 – Aug 2024</span>
-                        </div>
-                        <ul>
-                            <li>Executed manual test cases across functional and regression cycles, documenting defects with clear reproduction steps to support faster developer resolution.</li>
-                            <li>Gained hands-on experience in SDLC and STLC processes within a professional Agile environment.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education (Added) -->
-    <section id="education">
-        <div class="container">
-            <div class="reveal">
-                <div class="section-label"><i class="fas fa-graduation-cap"></i> Education</div>
-                <h2 class="section-title">Academic <span class="dim">background</span></h2>
-            </div>
-            <div style="margin-top: 40px;">
-                <div class="timeline">
-                    <div class="timeline-item reveal">
-                        <div class="timeline-dot dim"><i class="fas fa-university"></i></div>
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="timeline-role">BSc Computer Science</div>
-                                <span class="timeline-date">2021 – 2025</span>
-                            </div>
-                            <p style="color: var(--text-dim); font-size: 0.9rem;">Abdul Wali Khan University Mardan</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item reveal reveal-delay-1">
-                        <div class="timeline-dot dim"><i class="fas fa-school"></i></div>
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="timeline-role">FSC</div>
-                                <span class="timeline-date">2020 – 2021</span>
-                            </div>
-                            <p style="color: var(--text-dim); font-size: 0.9rem;">Quaid-e-Azam Public School & College Mardan</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item reveal reveal-delay-2">
-                        <div class="timeline-dot dim"><i class="fas fa-book"></i></div>
-                        <div class="timeline-card">
-                            <div class="timeline-header">
-                                <div class="timeline-role">Matriculation</div>
-                                <span class="timeline-date">2018 – 2019</span>
-                            </div>
-                            <p style="color: var(--text-dim); font-size: 0.9rem;">The Quaid-e-Azam Public School Mardan</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <div class="reveal">
-                <div class="section-label"><i class="fas fa-code"></i> Projects</div>
-                <h2 class="section-title">Featured <span class="dim">work</span></h2>
-                <p class="section-desc">Innovative projects combining quality engineering with emerging technologies.</p>
-            </div>
-            
-            <div style="margin-top: 48px;">
-                <div class="project-card reveal">
-                    <div class="project-img"><img src="https://picsum.photos/seed/gesture-control-ai/1200/500.jpg" alt="Hand Gesture Project"></div>
-                    <div class="project-body">
-                        <div class="project-tags">
-                            <span class="project-tag">Python</span>
-                            <span class="project-tag">Deep Learning</span>
-                            <span class="project-tag">Computer Vision</span>
-                            <span class="project-tag">OpenCV</span>
-                        </div>
-                        <h3 class="project-title">Hand Gesture Control</h3>
-                        <p class="project-desc">Developed a touchless computer activity control system using hand gesture recognition, deep learning and computer vision.</p>
-                        <div class="project-links">
-                            <a href="https://github.com/rehansaid" class="project-link"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card reveal reveal-delay-1">
-                    <div class="project-img"><img src="https://picsum.photos/seed/cypress-automation/1200/500.jpg" alt="Cypress Project"></div>
-                    <div class="project-body">
-                        <div class="project-tags">
-                            <span class="project-tag">Cypress</span>
-                            <span class="project-tag">JavaScript</span>
-                            <span class="project-tag">QA</span>
-                        </div>
-                        <h3 class="project-title">Test Automation Suite</h3>
-                        <p class="project-desc">Designed and implemented robust test automation frameworks using Cypress to ensure high-quality software releases.</p>
-                        <div class="project-links">
-                            <a href="https://github.com/rehansaid" class="project-link"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Docs</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card reveal reveal-delay-2">
-                    <div class="project-img"><img src="https://picsum.photos/seed/jira-bug-tracking/1200/500.jpg" alt="QA Project"></div>
-                    <div class="project-body">
-                        <div class="project-tags">
-                            <span class="project-tag">Jira</span>
-                            <span class="project-tag">Agile</span>
-                            <span class="project-tag">SDLC</span>
-                        </div>
-                        <h3 class="project-title">Manual Testing & Bug Tracking</h3>
-                        <p class="project-desc">Comprehensive manual test planning, exploratory testing sessions, and structured defect management using Jira.</p>
-                        <div class="project-links">
-                            <a href="https://jira.atlassian.com" class="project-link"><i class="fab fa-jira"></i> Jira</a>
-                            <a href="#" class="project-link"><i class="fas fa-file-alt"></i> Report</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="reveal">
-                <div class="section-label"><i class="fas fa-paper-plane"></i> Contact</div>
-                <h2 class="section-title">Let's work <span class="dim">together</span></h2>
-                <p class="section-desc">Open for QA opportunities, collaborations, and discussions about quality engineering.</p>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="reveal">
-                    <a href="mailto:rehansaid982@gmail.com" class="contact-info-card">
-                        <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
-                        <div>
-                            <div class="contact-info-label">Email</div>
-                            <div class="contact-info-val">rehansaid982@gmail.com</div>
-                        </div>
-                    </a>
-                    <a href="tel:+923423230087" class="contact-info-card">
-                        <div class="contact-info-icon"><i class="fas fa-phone"></i></div>
-                        <div>
-                            <div class="contact-info-label">Phone</div>
-                            <div class="contact-info-val">+92-342-3230087</div>
-                        </div>
-                    </a>
-                    <div class="contact-info-card" style="cursor: default;">
-                        <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div>
-                            <div class="contact-info-label">Location</div>
-                            <div class="contact-info-val">Bahria, Islamabad, Pakistan</div>
-                        </div>
-                    </div>
-                    <a href="https://www.linkedin.com/in/rehan-syed0342/" target="_blank" class="contact-info-card">
-                        <div class="contact-info-icon"><i class="fab fa-linkedin-in"></i></div>
-                        <div>
-                            <div class="contact-info-label">LinkedIn</div>
-                            <div class="contact-info-val">Connect with me</div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="reveal reveal-delay-1">
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <label class="form-label">Your Name</label>
-                            <input type="text" id="name" class="form-input" placeholder="John Doe" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Your Email</label>
-                            <input type="email" id="email" class="form-input" placeholder="john@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Subject</label>
-                            <input type="text" id="subject" class="form-input" placeholder="Job Opportunity / Collaboration">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Message</label>
-                            <textarea id="message" class="form-input" placeholder="Write your message here..." required></textarea>
-                        </div>
-                        <button type="submit" class="form-submit"><i class="fas fa-paper-plane"></i> Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-copy">&copy; 2026 Rehan Said. All rights reserved.</div>
-            <div class="footer-socials">
-                <a href="https://www.linkedin.com/in/rehan-syed0342/" target="_blank" class="footer-social" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="mailto:rehansaid982@gmail.com" class="footer-social" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                <a href="https://github.com/rehansaid" target="_blank" class="footer-social" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                <a href="tel:+923423230087" class="footer-social" aria-label="Phone"><i class="fas fa-phone"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></button>
-    
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Message sent successfully!</span></div>
-
-    <script>
-        /* --- TYPING EFFECT --- */
-        const phrases = ["Ensuring Quality Through Precision & Automation", "From Test Cases to Confidence", "Cypress Automation Specialist", "Zero Defects, Maximum Impact"];
-        let phraseIdx = 0, charIdx = 0, isDeleting = false;
-        const typeEl = document.getElementById('typewriter');
-
-        function type() {
-            const currentPhrase = phrases[phraseIdx];
-            if (!isDeleting) {
-                typeEl.textContent = currentPhrase.substring(0, charIdx + 1);
-                charIdx++;
-                if (charIdx === currentPhrase.length) {
-                    isDeleting = true;
-                    setTimeout(type, 2000);
-                    return;
-                }
-                setTimeout(type, 50);
-            } else {
-                typeEl.textContent = currentPhrase.substring(0, charIdx - 1);
-                charIdx--;
-                if (charIdx === 0) {
-                    isDeleting = false;
-                    phraseIdx = (phraseIdx + 1) % phrases.length;
-                    setTimeout(type, 400);
-                    return;
-                }
-                setTimeout(type, 30);
-            }
-        }
-
-        /* --- HERO PARTICLES --- */
-        const particlesEl = document.getElementById('particles');
-        const particleIcons = ['fa-bug', 'fa-shield-alt', 'fa-check', 'fa-code', 'fa-robot', 'fa-vial'];
-        for (let i = 0; i < 18; i++) {
-            const p = document.createElement('i');
-            p.className = `fas ${particleIcons[i % particleIcons.length]}`;
-            p.style.left = Math.random() * 100 + '%';
-            p.style.fontSize = (Math.random() * 10 + 6) + 'px';
-            p.style.animationDuration = (Math.random() * 12 + 10) + 's';
-            p.style.animationDelay = (Math.random() * 10) + 's';
-            particlesEl.appendChild(p);
-        }
-
-        /* --- SCROLL HANDLING --- */
-        const nav = document.getElementById('nav');
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        window.addEventListener('scroll', () => {
-            nav.classList.toggle('scrolled', window.scrollY > 60);
-            document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 600);
-        });
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('open');
-            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-        });
-        
-        mobileMenu.querySelectorAll('a').forEach(a => {
-            a.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('open');
-                document.body.style.overflow = '';
-            });
-        });
-
-        /* --- SCROLL REVEAL --- */
-        const reveals = document.querySelectorAll('.reveal');
-        const revealObs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('active');
-                    // Trigger progress bars
-                    e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
-                        setTimeout(() => bar.classList.add('filled'), 200);
-                    });
-                }
-            });
-        }, { threshold: 0.1, rootMargin: "0px 0px -30px 0px" });
-        
-        reveals.forEach(el => revealObs.observe(el));
-
-        /* --- FORM HANDLER --- */
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            const mailtoLink = `mailto:rehansaid982@gmail.com?subject=Portfolio Inquiry: ${encodeURIComponent(subject)}&body=Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${encodeURIComponent(message)}`;
-            
-            window.location.href = mailtoLink;
-            
-            // Show Toast
-            const toast = document.getElementById('toast');
-            const msg = document.getElementById('toastMsg');
-            msg.textContent = name ? `Thanks ${name}! Message sent.` : 'Message sent successfully!';
-            toast.classList.add('show');
-            
-            // Reset form
-            this.reset();
-            
-            setTimeout(() => toast.classList.remove('show'), 4000);
-        });
-
-        // Init Typewriter
-        setTimeout(type, 1000); // Start typewriter after a short delay
-    </script>
+<script type="text/plain" id="cvdata">JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNyAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0EgPDwKL1MgL1VSSSAvVHlwZSAvQWN0aW9uIC9VUkkgKG1haWx0bzpyZWhhbnNhaWQ5ODJAZ21haWwuY29tKQo+PiAvQm9yZGVyIFsgMCAwIDAgXSAvUmVjdCBbIDM0My44MjY0IDc0OC45OTk0IDQ1MC44MjI0IDc2MC4wMzk0IF0gL1N1YnR5cGUgL0xpbmsgL1R5cGUgL0Fubm90Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9BIDw8Ci9TIC9VUkkgL1R5cGUgL0FjdGlvbiAvVVJJIChodHRwczovL3d3dy5saW5rZWRpbi5jb20vaW4vcmVoYW4tc3llZDAzNDIpCj4+IC9Cb3JkZXIgWyAwIDAgMCBdIC9SZWN0IFsgMTUwLjcwNDYgNzM2LjM5OTQgMzIwLjQ3MjIgNzQ3LjQzOTQgXSAvU3VidHlwZSAvTGluayAvVHlwZSAvQW5ub3QKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0EgPDwKL1MgL1VSSSAvVHlwZSAvQWN0aW9uIC9VUkkgKGh0dHBzOi8vcmVoYW5zYWlkLmdpdGh1Yi5pby8pCj4+IC9Cb3JkZXIgWyAwIDAgMCBdIC9SZWN0IFsgMzI3Ljk3OTQgNzM2LjM5OTQgNDQ0LjU3MSA3NDcuNDM5NCBdIC9TdWJ0eXBlIC9MaW5rIC9UeXBlIC9Bbm5vdAo+PgplbmRvYmoKNyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1PYmxpcXVlIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMyAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjggMCBvYmoKPDwKL0Fubm90cyBbIDQgMCBSIDUgMCBSIDYgMCBSIF0gL0NvbnRlbnRzIDEyIDAgUiAvTWVkaWFCb3ggWyAwIDAgNTk1LjI3NTYgODQxLjg4OTggXSAvUGFyZW50IDExIDAgUiAvUmVzb3VyY2VzIDw8Ci9Gb250IDEgMCBSIC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSSBdCj4+IC9Sb3RhdGUgMCAKICAvVHJhbnMgPDwKCj4+IC9UeXBlIC9QYWdlCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9QYWdlTW9kZSAvVXNlTm9uZSAvUGFnZXMgMTEgMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iagoxMCAwIG9iago8PAovQXV0aG9yIChSZWhhbiBTYWlkKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYxMDAzMDkzNTU3KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYxMDAzMDkzNTU3KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSBcKG9wZW5zb3VyY2VcKSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChSZWhhbiBTYWlkIC0gU1FBIEVuZ2luZWVyIENWKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9Db3VudCAxIC9LaWRzIFsgOCAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjEyIDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDMyMDEKPj4Kc3RyZWFtCkdhdUhOPkJlZGwmcTgwMVcoMUo6J1FjVytTZV91S2owOVY2bkJUPCNeR0pnajRkT1RWPi9GXi5KLEU/VC9yOC1zUkZsazYlTWxXdDxJXCRBZV5sQkhCXTVTXzVKN1dkRjorWVNSVUI7UVNWLS9EJVNTTmEzO3I/dSM7YS0kRCZSVFBaIy9dSCoyQCo+Ki4vNUxcK0pkLG5HdS02YjxiW2cmLW9TWDEyMCJTOXVFQ1RTbWYnMkQ3aSgqaVQsX0g9VGZCYnIvV1ExJztrZVtrM2E3J3JdQypCa0NWR0xrXm1aWTFGSS1CL05UYlNPVzA8cFIjXVg6RiNQRmRTaWo2RV90VEIhLDIjNGdXQUo0TGEnZmY6NylYP1pPKVcmXl1GNkBeVHE8WWVBO1FCWzlZIWJgWyh1IVticHFqSmlERyhKIWFhL2NmQFVIZUVdU3FSY0gnWlpbVjlzJFlUOzNaXDZzRidbYkdyYGszUEc8PG1OT2slS15EYExoZDk+WUBmaDQydWFyN2pDXUhTMFJDMVRsPzBfTCxHbyVeS0VcJ3UxTl50TyddSiw7L1J1VTgwTiVvWmZvNV85KHBlUl8mZSpBOnIzTCNuRDkmcTZdQEgxaW46W0QhNSonRWpRaWFCRGNGcENSWT02TiNAIUZGWCtrbFZVImMuIThrZ2tAbCZbQyhCYjpPakI+ZytfKWUoWzNCMFFwXj1bRnU/NEQ4Uy1iYzJlYz9PblpdZSZlTEJSXScnJkBxQCVwPSZlUDA3OE9UMS02cXQpSklMRUYyY3RxYD4jTk4oSlBJVipUciFYbixgXjFyb0ZDa2ZoYEhvVCcoVSxnYi5iOkpOUT9scUA8bFtNRSUoZyNXU19mUW5aTnUvYW1da2lhXSZbXEVrQEF1M21IXF5IKTFCLWI/YyhtdGxEZkAqOClfcmo/PEVJSmByUjpPU3I6O01rZzdjaStaTlJLRCY7WVRrdCg0W2hmW18sMXQnWU9UN3RxSkYzOjg8JSZWR3E7LCc3akNRO0JmXXReRCYjSy5aV2pJSGBtWWxab2pyYVdvV18yMjheIlE+WUM9QE9eb0xFdSRyXV9kOStvWWpZUC5YWjlSPGlcSzFSWEduKlNWVjNKTjA+R01RR1VFNmZEcVBpXFgxXDxDciZJWy0mcTckVSpbR2hUV0BWJko4bS4nX0YmTVtudHIoYF05PFcyQWVRZzVYNXJdRHAxSjBQakxrY2lhLnEnYzRrJFo4JCg+XEdLbnBWamRLTG1Ob0J1LXBBcSc9NEVxIWN1XWM9ZztRNilMU2IoL0ZkT15iTyRAc1VWQGVjKEFybjVDdTtecTxkRFBJIjQzYGNyJSNySyhiWis7XS5kaVNmcysrQmEkM2thQ1AvJG9vXldZNkM/dSsvXjUqWm9zTFota1shI0tNWSZcJ1MjLkZWOzlvVFokXzspZFxHbihQLGtpVTdoRkpqI0Irbm9BMVRpPkdySUdmQi9idUwyN25AS2BocFlpcT1TRGQibnBeN25vQFhLIi9OU1JYS1FmTjNsQE0mUXUvanNZZW0mNjstbUpkYk0yPnE0ZC9KPVNlVVFPXlMrTnNBO2ssR01ATyM2WVVKNFMqQUdJayRXZ2RMal8nPDRcPGdlZklEWmsjIiplJnQ1cm1UTDF0JnAyWzVqKldIdCNTTzFnZ3M9SGJUSDkpJzI+XTgmaCVjYVheWkZgVjc4WUMzUWU7MlZAQ2gjO1AjNlEiT0xLYjkhXm1YU05rJz9vLjBrbTEnY0xyaWhcPkVcajRaMjlHYjgyNDpaKFlNaVRxO2I/MCgzXTtUaFE8Ul9jT2AiRDhEM2pfMTJSI00vanFWTWBdOyxpaGhoJGdISiFdXig0SEwpVyNlSyU1bV1ocyFqNkBOPk00Pk4oLUJkdEJWWjU5O19tXTlobjZuUGFHZDxSSixeLz1ycTRqRGwoNictLkA3MGJwcjEpM3U7X18kJCVPQT9dJHUxJChwNVVkRD1xU1IyPzNKU2BmWjBqJGtvQE9ablYmPj1COEs4YEx1Jjo5UyZtWTkhOXU3UFBVQkZfKVhdMDdAPDNXRkZmYydrSEpSa0xpLChAKG4zPnNsYyJNPmIodE5dRlhlYXQyW2dBc0oqZ0MpNmVoNDdCbT4udGVlYic0SkQ+JkdiVi8iNXNYaHFcXyVDbzoxPyk1OkBYOzNFJlJQPF4kS1NNQGpETlY1Ukh1QGI+X2p0dF9fUSM5I0BtPXRyJD4kL0xCJWosSDpmKkVQRXVEa1BgZnVlQVtsYWJIaD82byQyXzxJSGcyRmRvVWpyLURMNzs1SWJfOkdqNWopNiZvKXAuX2hLPy9namxPVVRnJC5qamZjIms0QjhsMnBVKEBtXjc0N0VqLWpCcVxYdWgiYFkvKkkvT0orQl4+QyRDPDlMXDluMW8lIlZwLVAyMGlcTWpZPTRrNi5CTTVIPW83NTxKJUglaD0oLVI4M1QrU2dpYEZATnUucV5dMlVFbktSME5VLCJVPTQvKi86QmFxLm41UThIZCN0ZjFkbTpwWSVqc0o1JD9JUGM+azclcHA/LldRX2hAMC9FTTlkcE5dM2lUOUkzY2o6WFthRGJxI1tmaj1ob11ALzo8X240bDQyMCcsTlZsOXJiJHBINGFsb15ObUheOE9hcG0iJTBBYzM5XW9sKTRrXSlgTEotKEpaUi88bEUhIXAtTCtUT1gjTztJSysjby9XNzFudT5wUTVKI3VLPlZHJjZQYk81IVRHPiwnZWtBPlxXKWRfPnBGKz0sMSpsMT5gY1ZlaWNKRUcoVTVvK3JBVExTWU4kS1Q2WypCc0BYVlZBNWE/MHRqTk9OVnBKaj5IU0dRYDhoLUMsdGdbIj0nPC9gc1VWYjAjV0E6YFpwc2dbM1s8NmBZV1skWz09Li4scTBUJCldcXUjXlkmXkVkNj50SDFyPClQZCJbOShBVEkwbEVSOilGaiZxRElhcV5ZRV9MVWMmTT8lWCMvLCJDIzkhYWVNbi4zVlEjL2tHWyR1bmdFbyFSNDYxOFpFQjdabClmMCMuXjM9OFlgWC1kSUxgMy4kTVptJmtZMGZwblZYNj4iVFRQVzxNMComIkFOYlYqOTdcMTJCU05bPFhbZVpiI2ZUZjs4bjxnITs1bUJeJT5hNjYyLGgpWzVWLmdBVCkvPWtFTWAiU0NWaFYxXFRYdDMzLURUJFxBLCYjLD8pIV0yOjVwOixOPk0oODlnKVtjTGZwYEZLQWI0JiZaJTZfYEQuOCsmPEdDZ1lIQz1wWERbYktlOGVQP2RmcjhdXWdhZV5TYkI3I2sobzNoRyMxIWhkbV0uLzlSZi0lME8paiZUanEvYCowWjJyNkBAbzlaRCdYK1tCbC1sM2FLMiVRbVlgNUktSUpsKWpFU2skZzhNTGI6S2VxRUZtPVZnNSlKRjtzQSRjNGFHP0I8NG8lMmw6KlBVNCghLE5jQDVkJz5kYStlZ2NFV2NjazdMJDlxOzdPPzk8IVRBPydUXSInVklVUVBsP19CO2Y7VzE6I2ljPi9XMXI+RWs/VERuQiZiKF8zRSNwMkkuaTJgNU5mMyZjMz9LLChWX0RVJlJdMUpFKzI0aj9wTEhlUUBEPSIzNj81OW5UTlopW3RqJUhfPltJLjEtNCo8KmI/VkhvQk1sI2shVV8mVGlHNSliQlBaJlRHX1k5SmIlT2xNYiw9WVxvPiN0bS9LUTJ1LFxvPihdM0wnMjQ1V2QwaF48OWgkc0FOXz5wRSVQJicmYHJWOz9uKXFxMSV0QUZDUmJSUTciaj1IN29VVjhhUHJtVCpWTV8iaSkrVWssM0wqXWlUTlpFWyUrLllyMi9NZ15VZ0VgMzxuaWFtaDtyTWZcUjVFMmllTFJTPmQ9I0hCalknSnVVVUIlJSFpWVFPUE4vKFU2WEdaVWJGZ15KSENXL0pMQF1yNnI6QTQqb2hfUG5ZcTUoSWEyX1J0LnUsQk4nI0phJj0uXVBxKFxAX1ZBbkBrbVE1KFFlT2ZVM3I0IyphMGJIQERlNzBvcFw7R1Y7cyNbOlcrJnFJUTpzKylGPVZVSVFocSdlUkBhXVEzc24rRk5JSG4uKXEhdDdWOElmJUBVSy9yIUJKMyU5ZyllXDZPcGEiPGZzclo/Xz8wSmNcPTwnNiEkIj1kZScjIVZQQVdgO2lMYiEoNixVVSY4SSZqSFgsZ0RHOTdGU2dYbzxsciYoOD9jdEM/bC9XblNsa0Mval5JLyJmMkAjRGB+PmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDEzCjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDA2MSAwMDAwMCBuIAowMDAwMDAwMTEyIDAwMDAwIG4gCjAwMDAwMDAyMTkgMDAwMDAgbiAKMDAwMDAwMDMzMSAwMDAwMCBuIAowMDAwMDAwNTEyIDAwMDAwIG4gCjAwMDAwMDA3MDYgMDAwMDAgbiAKMDAwMDAwMDg4NSAwMDAwMCBuIAowMDAwMDAxMDAwIDAwMDAwIG4gCjAwMDAwMDEyMzUgMDAwMDAgbiAKMDAwMDAwMTMwNCAwMDAwMCBuIAowMDAwMDAxNTk3IDAwMDAwIG4gCjAwMDAwMDE2NTcgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8ZGFlYTE4YWFmNTM5ZDQ0OGY4ZmFhY2FlMTgwNmNiNjQ+PGRhZWExOGFhZjUzOWQ0NDhmOGZhYWNhZTE4MDZjYjY0Pl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKG9wZW5zb3VyY2UpCgovSW5mbyAxMCAwIFIKL1Jvb3QgOSAwIFIKL1NpemUgMTMKPj4Kc3RhcnR4cmVmCjQ5NTAKJSVFT0YK</script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},root=document.documentElement;
+document.getElementById("yr").textContent=new Date().getFullYear();
+/* theme */
+var saved=null;try{saved=localStorage.getItem("theme")}catch(e){}
+var dark=saved?saved==="dark":true;
+function setTheme(){root.setAttribute("data-theme",dark?"dark":"light");$("theme").textContent=dark?"Light mode":"Dark mode";try{localStorage.setItem("theme",dark?"dark":"light")}catch(e){}}
+$("theme").onclick=function(){dark=!dark;setTheme()};setTheme();
+/* reveal */
+var els=document.querySelectorAll(".rv");
+if("IntersectionObserver"in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.08});els.forEach(function(e){io.observe(e)})}else els.forEach(function(e){e.classList.add("in")});
+/* 3D / 4D hero: rotating tesseract (4D hypercube) projected to 2D, with drifting test symbols */
+var cv=$("fx"),g=cv.getContext("2d"),hero=cv.parentNode,V=[],E=[],W=0,H=0,t=0,mx=0,my=0,tx=0,ty=0,
+still=window.matchMedia("(prefers-reduced-motion: reduce)").matches,i,j,
+G=[],sy=["\u2713","{ }","</>","200","404","PASS","FAIL","API","bug","assert"];
+for(i=0;i<16;i++)V.push([i&1?1:-1,i&2?1:-1,i&4?1:-1,i&8?1:-1]);
+for(i=0;i<16;i++)for(j=i+1;j<16;j++){var d=i^j;if(d&&!(d&(d-1)))E.push([i,j])}
+for(i=0;i<16;i++)G.push({s:sy[i%sy.length],x:Math.random(),y:Math.random(),v:.00008+Math.random()*.00012,z:.4+Math.random()*.9});
+function size(){var r=Math.min(window.devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*r;cv.height=H*r;g.setTransform(r,0,0,r,0,0)}
+function rot(v,a,b,q){var c=Math.cos(q),s=Math.sin(q),x=v[a],y=v[b];v[a]=x*c-y*s;v[b]=x*s+y*c}
+hero.addEventListener("mousemove",function(e){var r=hero.getBoundingClientRect();tx=(e.clientX-r.left)/r.width-.5;ty=(e.clientY-r.top)/r.height-.5});
+function frame(){
+ if(window.scrollY<hero.offsetHeight+50&&!document.hidden){
+ g.clearRect(0,0,W,H);var hc=root.getAttribute("data-theme")==="dark"?"96,200,255":"37,99,235";mx+=(tx-mx)*.05;my+=(ty-my)*.05;
+ g.font="13px Consolas,monospace";g.fillStyle="rgba("+hc+",.22)";
+ G.forEach(function(o){o.y-=o.v*o.z*16;if(o.y<-.05)o.y=1.05;g.globalAlpha=.25+o.z*.3;g.fillText(o.s,o.x*W-mx*60*o.z,o.y*H-my*40*o.z)});
+ g.globalAlpha=1;
+ var S=Math.min(W,H)*(W<800?.3:.44),ox=W<800?W*.5:W*.73,oy=H*(W<800?.3:.5),P=V.map(function(v){
+  var p=v.slice();rot(p,0,3,t);rot(p,1,2,t*.7);rot(p,0,1,t*.4);
+  var k=1/(2.6-p[3]),x=p[0]*k*1.6,y=p[1]*k*1.6,z=p[2]*k*1.6;
+  var a=t*.5+mx*2.5,b=my*2,x2=x*Math.cos(a)+z*Math.sin(a),z2=-x*Math.sin(a)+z*Math.cos(a);
+  var y2=y*Math.cos(b)-z2*Math.sin(b);z2=y*Math.sin(b)+z2*Math.cos(b);
+  var f=1/(3-z2);return[ox+x2*f*S*1.6,oy+y2*f*S*1.6,z2]});
+ E.forEach(function(e){var A=P[e[0]],B=P[e[1]],d=(A[2]+B[2])/2;g.strokeStyle="rgba("+hc+","+(.3+.3*(d+1.5)/3)+")";g.lineWidth=1.3;g.beginPath();g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1]);g.stroke()});
+ P.forEach(function(p){g.fillStyle="rgba("+hc+",.9)";g.beginPath();g.arc(p[0],p[1],2.4,0,6.3);g.fill()});
+ t+=.004}
+ if(!still)requestAnimationFrame(frame)}
+size();window.addEventListener("resize",function(){size();if(still)frame()});frame();
+/* 3D tilt on cards (pointer devices only) */
+if(!still&&window.matchMedia("(hover: hover)").matches)document.querySelectorAll(".card").forEach(function(c){
+ c.addEventListener("mousemove",function(e){var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform="perspective(700px) rotateX("+(-y*5)+"deg) rotateY("+(x*5)+"deg) translateY(-3px)"});
+ c.addEventListener("mouseleave",function(){c.style.transform=""})});
+/* Page-wide dimensional background: 3D cubes/octahedra, 4D tesseract and 16-cell, 5D penteract, plus a flowing depth field */
+var B=$("bg"),b=B.getContext("2d"),BW=0,BH=0,T=0,mx2=0,my2=0,mtx=0,mty=0,O=[],F=[];
+function cube(n){var V=[],E=[],N=1<<n,i,j,d,k;for(i=0;i<N;i++){var v=[];for(k=0;k<n;k++)v.push(i>>k&1?1:-1);V.push(v)}
+ for(i=0;i<N;i++)for(j=i+1;j<N;j++){d=i^j;if(d&&!(d&(d-1)))E.push([i,j])}return{V:V,E:E}}
+function cross(n){var V=[],E=[],i,j,k;for(i=0;i<2*n;i++){var v=[];for(k=0;k<n;k++)v.push(0);v[i>>1]=i&1?1:-1;V.push(v)}
+ for(i=0;i<2*n;i++)for(j=i+1;j<2*n;j++)if(i>>1!==j>>1)E.push([i,j]);return{V:V,E:E}}
+function mk(g,n,x,y,s,par,sp,hue){var pl=[],a,c;for(a=0;a<n;a++)for(c=a+1;c<n;c++)pl.push([a,c,(.3+Math.random())*sp*(Math.random()<.5?-1:1)]);
+ O.push({V:g.V,E:g.E,n:n,x:x,y:y,s:s,par:par,pl:pl,hue:hue,ph:Math.random()*9})}
+mk(cube(5),5,.16,.45,1,.25,.55,0);   /* 5D penteract */
+mk(cross(4),4,.88,.9,.75,.35,.8,1);  /* 4D 16-cell */
+mk(cube(4),4,.82,.2,.6,.15,.7,0);    /* 4D tesseract */
+mk(cross(3),3,.08,1.15,.5,.5,1,1);   /* 3D octahedron */
+mk(cube(3),3,.92,1.55,.5,.45,1,0);   /* 3D cube */
+mk(cube(3),3,.3,1.9,.45,.6,1.1,1);   /* 3D cube */
+mk(cube(5),5,.78,2.3,.8,.3,.5,1);    /* 5D penteract */
+mk(cross(4),4,.12,2.6,.7,.4,.8,0);   /* 4D 16-cell */
+for(var q=0;q<110;q++)F.push({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random()});if(window.innerWidth<700)F.length=55;
+function bsize(){var r=Math.min(window.devicePixelRatio||1,2);BW=B.clientWidth;BH=B.clientHeight;B.width=BW*r;B.height=BH*r;b.setTransform(r,0,0,r,0,0)}
+window.addEventListener("mousemove",function(e){mtx=e.clientX/BW-.5;mty=e.clientY/BH-.5});
+function pr(v,n,pl,t){var p=v.slice(),i,d;for(i=0;i<pl.length;i++)rot(p,pl[i][0],pl[i][1],t*pl[i][2]);
+ for(d=n-1;d>=3;d--){var k=1/(2.8-p[d]);for(i=0;i<d;i++)p[i]*=k*1.7}
+ return p}
+function bframe(){
+ if(!document.hidden){
+ var dk=root.getAttribute("data-theme")==="dark",sy=window.scrollY,col=dk?"96,200,255":"37,99,235",col2=dk?"150,130,255":"79,70,229",al=dk?.9:.5;
+ b.clearRect(0,0,BW,BH);mx2+=(mtx-mx2)*.04;my2+=(mty-my2)*.04;
+ /* flowing depth field */
+ var cxx=BW/2+mx2*120,cyy=BH/2+my2*80;
+ F.forEach(function(f){f.z-=.0016;if(f.z<.04){f.z=1;f.x=Math.random()*2-1;f.y=Math.random()*2-1}
+  var fx=f.x+Math.sin(T*2+f.y*4)*.05,k=.55/f.z,X=cxx+fx*k*BW*.5,Y=cyy+f.y*k*BH*.5-sy*.05*(1-f.z),k2=.55/(f.z+.03),X2=cxx+fx*k2*BW*.5,Y2=cyy+f.y*k2*BH*.5-sy*.05*(1-f.z);
+  b.strokeStyle="rgba("+col+","+((1-f.z)*.5*al)+")";b.lineWidth=.6+(1-f.z)*1.3;b.beginPath();b.moveTo(X2,Y2);b.lineTo(X,Y);b.stroke()});
+ /* dimensional objects */
+ O.forEach(function(o){
+  var S=Math.min(BW,BH)*.22*o.s,wr=BH+500,oy=((o.y*BH-sy*o.par)%wr+wr)%wr-250,ox=o.x*BW+Math.sin(T+o.ph)*20-mx2*70*o.par;
+  var P=o.V.map(function(v){var p=pr(v,o.n,o.pl,T),a=T*.35+mx2*2+o.ph,z=p[2],x=p[0]*Math.cos(a)+z*Math.sin(a),z2=-p[0]*Math.sin(a)+z*Math.cos(a),bb=my2*1.6+.4,y=p[1]*Math.cos(bb)-z2*Math.sin(bb);z2=p[1]*Math.sin(bb)+z2*Math.cos(bb);
+   var f=1/(3.2-z2);return[ox+x*f*S*1.5,oy+y*f*S*1.5,z2]});
+  var c=o.hue?col2:col,w=o.n===5?.7:.55;
+  b.lineWidth=o.n>3?1.1:1.4;b.shadowColor="rgba("+c+",.9)";b.shadowBlur=dk?8:0;
+  o.E.forEach(function(e){var A=P[e[0]],Bp=P[e[1]],d=(A[2]+Bp[2])/2;b.strokeStyle="rgba("+c+","+((.12+.2*(d+1.5)/3)*al)+")";b.beginPath();b.moveTo(A[0],A[1]);b.lineTo(Bp[0],Bp[1]);b.stroke()});
+  b.fillStyle="rgba("+c+","+(.45*al)+")";P.forEach(function(p){b.beginPath();b.arc(p[0],p[1],o.n>3?1.8:2.2,0,6.3);b.fill()})});
+ b.shadowBlur=0;T+=.004}
+ if(!still)requestAnimationFrame(bframe)}
+bsize();window.addEventListener("resize",function(){bsize();if(still)bframe()});bframe();
+var up=$("up");window.addEventListener("scroll",function(){up.classList.toggle("show",window.scrollY>600)});up.onclick=function(){window.scrollTo({top:0,behavior:still?"auto":"smooth"})};
+var na=document.querySelectorAll("nav ul a"),so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)na.forEach(function(a){a.classList.toggle("act",a.getAttribute("href")==="#"+e.target.id)})})},{rootMargin:"-40% 0px -55% 0px"});document.querySelectorAll("main section").forEach(function(x){so.observe(x)});
+$("cv").onclick=function(e){e.preventDefault();try{var r=atob(document.getElementById("cvdata").textContent.trim()),u=new Uint8Array(r.length),k;for(k=0;k<r.length;k++)u[k]=r.charCodeAt(k);var url=URL.createObjectURL(new Blob([u],{type:"application/pdf"})),a=document.createElement("a");a.href=url;a.download="Rehan-Said-CV.pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},4000)}catch(x){}};
+var ph=document.querySelector(".ph");
+if(!still&&window.matchMedia("(hover: hover)").matches){hero.addEventListener("mousemove",function(){ph.style.transform="perspective(900px) rotateY("+(tx*12)+"deg) rotateX("+(-ty*9)+"deg)"});hero.addEventListener("mouseleave",function(){ph.style.transform=""})}
+/* contact */
+$("cf").onsubmit=function(e){e.preventDefault();var f=this,st=$("st"),btn=f.querySelector("button[type=submit]"),d={name:$("cn").value,email:$("ce").value,message:$("cm").value,_subject:"Portfolio message from "+$("cn").value,_replyto:$("ce").value};
+if(f.elements._honey.value)return;btn.disabled=true;st.textContent="Sending...";
+fetch("https://formsubmit.co/ajax/rehansaid982@gmail.com",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(j){if(j.success==="true"||j.success===true){st.textContent="Thank you! Your message has been sent.";f.reset()}else throw 0}).catch(function(){var m="mailto:rehansaid982@gmail.com?subject="+encodeURIComponent(d._subject)+"&body="+encodeURIComponent(d.message+"\n\nFrom: "+d.name+" ("+d.email+")");st.innerHTML='Automatic sending is unavailable right now, so your email app is opening with the message ready. You can also write to <a href="'+m+'">rehansaid982@gmail.com</a>.';location.href=m}).then(function(){btn.disabled=false})};
+})();
+</script>
 </body>
 </html>
